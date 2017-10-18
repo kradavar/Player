@@ -1,11 +1,14 @@
 
 package model;
 
+
 import java.io.File;
 
-public class Song {
+
+public class Song  {
 	private String genre, artist, album, title, directory;
 	private File songFile;
+	private int length;
 	public boolean isFavorite;
 
 	public Song(String genre, String artist, String album, String title, String directory){
@@ -95,4 +98,5 @@ public class Song {
 
 
 	}
+
 }

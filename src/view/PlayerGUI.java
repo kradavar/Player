@@ -1,6 +1,7 @@
 
 package view;
 
+import controller.Controller;
 import model.MusicLibrary;
 import model.Playlist;
 import model.Song;
@@ -48,7 +49,7 @@ public class PlayerGUI extends JPanel{
 	
 	PlayerGUI thisGUI;
 	
-	public PlayerGUI(){
+	public PlayerGUI(Controller controller){
 		musicLibrary = new MusicLibrary();
 		
 		playlistList = new JList();
@@ -71,7 +72,7 @@ public class PlayerGUI extends JPanel{
 		forwardButton = new JButton("Forward");
 		stopButton = new JButton("Stop");
 		buttonPanel = new JPanel();
-		musicSlider = new JSlider();
+		musicSlider = new MusicSlider();
 		bottomContainer = new JPanel();
 
 		constraints = new GridBagConstraints();
@@ -219,18 +220,8 @@ public class PlayerGUI extends JPanel{
 	public void createPlayer(JFrame TitanFrame){
 		TitanFrame.getContentPane().add(this);
 	}
-	public MusicLibrary getMusicLibrary(){
-		return musicLibrary;
-	}
-	public void setSelectedListValue(String title){
-		songList.setSelectedValue(title, false);
-	}
 
-	/*public void addSongToPlayerLibrary(String CSVSong){
-		musicLibrary.addSong(CSVSong);
-	}*/
-
-	public void createMenu(JFrame mainFrame){
+		public void createMenu(JFrame mainFrame, Controller controller){
 		JMenuBar Menu = new JMenuBar();
 		JMenu FileMenu = new JMenu("File");
 		JMenu ViewMenu = new JMenu("View");
@@ -251,8 +242,9 @@ public class PlayerGUI extends JPanel{
 		
 		addSong.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				AddSongDialog songDialog = new AddSongDialog(musicLibrary);
-				songDialog.show();
+				AddSongDialog songDialog = new AddSongDialog();
+
+				songDialog.createAddSongDialog(controller);
 				updateLists();
 				try {
 					musicLibrary.saveLibrary();
@@ -263,8 +255,8 @@ public class PlayerGUI extends JPanel{
 		});
 		deleteSong.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				DeleteSongDialog deleteDialog = new DeleteSongDialog(musicLibrary);
-				deleteDialog.show();
+				DeleteSongDialog deleteDialog = new DeleteSongDialog();
+				deleteDialog.createDeleteDialog(controller);
 				updateLists();
 				try {
 					musicLibrary.saveLibrary();
@@ -275,8 +267,8 @@ public class PlayerGUI extends JPanel{
 		});
 		addPlaylist.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				AddPlaylistDialog playlistDialog = new AddPlaylistDialog(musicLibrary);
-				playlistDialog.show();
+				AddPlaylistDialog playlistDialog = new AddPlaylistDialog();
+				playlistDialog.createAddPlaylistDialog(controller);
 				updateLists();
 				try {
 					musicLibrary.saveLibrary();
@@ -288,8 +280,8 @@ public class PlayerGUI extends JPanel{
 		changeColors.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ChangeColorDialog colorDialog = new ChangeColorDialog(thisGUI);
-				colorDialog.show();
+				ChangeColorDialog colorDialog = new ChangeColorDialog();
+				colorDialog.createChangeColorDialog(controller);
 				updateLists();
 
 			}
@@ -315,12 +307,13 @@ public class PlayerGUI extends JPanel{
 		for(String song : musicLibrary.getSongTitles()){
 			songModel.addElement(song);
 		}
-		//for(String album : musicLibrary.getAlbums()){
-		//	albumModel.addElement(album);
-		//}
-		//for(String genre : musicLibrary.getGenres()){
-		//	genreModel.addElement(genre);
-		//}
+
+		for(String album : musicLibrary.getAlbums()){
+			albumModel.addElement(album);
+		}
+		for(String genre : musicLibrary.getGenres()){
+			genreModel.addElement(genre);
+		}
 		for(String artist : musicLibrary.getArtists()){
 			artistModel.addElement(artist);
 		}

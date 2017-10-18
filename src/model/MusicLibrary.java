@@ -10,16 +10,16 @@ import java.util.Map;
 
 public class MusicLibrary {
 
-	private Map<String, Song> songLibraryMap = new HashMap<String, Song>();
-	private Map<String, Playlist> playlistLibraryMap = new HashMap<String, Playlist>();
-	private HashSet<String> artists;
-	private HashSet<String> albums;
-	private HashSet<String> genres;
-	private HashSet<String> directories;
-	private HashSet<String> songTitles;
-	private File libraryFile;
-	private Clip clip;
-	private Song currentSong;
+	public Map<String, Song> songLibraryMap = new HashMap<String, Song>();
+	public Map<String, Playlist> playlistLibraryMap = new HashMap<String, Playlist>();
+	public HashSet<String> artists;
+	public HashSet<String> albums;
+	public HashSet<String> genres;
+	public HashSet<String> directories;
+	public HashSet<String> songTitles;
+	public File libraryFile;
+	public Clip clip;
+	public Song currentSong;
 	
 	public Song getCurrentSong(){
 		return currentSong;
@@ -107,36 +107,36 @@ public class MusicLibrary {
 		albums.add(album);
 	}
 
-	public void saveLibrary() throws IOException{
+	public void saveLibrary() throws IOException {
 		FileWriter libraryFileWriter = new FileWriter(libraryFile, false);
 		BufferedWriter libraryWriter = new BufferedWriter(libraryFileWriter);
-		
-		libraryWriter.write(directories.size()+ "\n");
-		for(String s : directories){
+
+		libraryWriter.write(directories.size() + "\n");
+		for (String s : directories) {
 			libraryWriter.write(s + "\n");
 		}
-		libraryWriter.write(genres.size()+ "\n");
-		for(String s : genres){
+		libraryWriter.write(genres.size() + "\n");
+		for (String s : genres) {
 			libraryWriter.write(s + "\n");
 		}
-		libraryWriter.write(artists.size()+ "\n");
-		for(String s : artists){
+		libraryWriter.write(artists.size() + "\n");
+		for (String s : artists) {
 			libraryWriter.write(s + "\n");
 		}
-		libraryWriter.write(albums.size()+ "\n");
-		for(String s : albums){
+		libraryWriter.write(albums.size() + "\n");
+		for (String s : albums) {
 			libraryWriter.write(s + "\n");
 		}
 		libraryWriter.write(playlistLibraryMap.size() + "\n");
-		for(Map.Entry<String, Playlist> entry: playlistLibraryMap.entrySet()){
-			libraryWriter.write(entry.getValue().getTitle() + "\n");			
+		for (Map.Entry<String, Playlist> entry : playlistLibraryMap.entrySet()) {
+			libraryWriter.write(entry.getValue().getTitle() + "\n");
 		}
 		libraryWriter.write(songLibraryMap.size() + "\n");
-		for(Map.Entry<String,Song> entry : songLibraryMap.entrySet()){
+		for (Map.Entry<String, Song> entry : songLibraryMap.entrySet()) {
 			Song write = entry.getValue();
-			libraryWriter.write(write.getArtist() +","+write.getAlbum()+","+write.getTitle()+","+write.getGenre()+","+write.getDirectory()+"\n");
+			libraryWriter.write(write.getArtist() + "," + write.getAlbum() + "," + write.getTitle() + "," + write.getGenre() + "," + write.getDirectory() + "\n");
 		}
-		
+
 		libraryWriter.close();
 		libraryFileWriter.close();
 	}
@@ -232,5 +232,13 @@ public class MusicLibrary {
 		catch(Exception e){
 			
 		}
+	}
+
+	public HashSet<String> getAlbums() {
+		return albums;
+	}
+
+	public HashSet<String> getGenres() {
+		return genres;
 	}
 }

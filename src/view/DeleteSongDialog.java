@@ -1,5 +1,6 @@
 package view;
 
+import controller.Controller;
 import model.MusicLibrary;
 
 import javax.swing.*;
@@ -16,10 +17,10 @@ public class DeleteSongDialog extends JDialog{
 	JButton cancel;
 	JPanel buttonPanel;
 	String deleteSongTitle;
-	public DeleteSongDialog(MusicLibrary musicLib){
-		super();
-		setModal(true);
-		musicLibrary = musicLib;
+
+
+    public void createDeleteDialog(Controller controller) {
+		musicLibrary = controller.musicLib;
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		instructions = new JLabel("Type in the title of a song to delete it.");
@@ -44,7 +45,7 @@ public class DeleteSongDialog extends JDialog{
 		buttonPanel.add(cancel);
 		this.add(buttonPanel, constraints);
 		pack();
-		
+
 		deleteSong.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				if(deleteSongField.getText().length() > 0){
@@ -53,7 +54,7 @@ public class DeleteSongDialog extends JDialog{
 				setVisible(false);
 				dispose();
 			}
-			
+
 		});
 		cancel.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -61,6 +62,5 @@ public class DeleteSongDialog extends JDialog{
 				dispose();
 			}
 		});
-	}
-
+    }
 }

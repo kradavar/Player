@@ -1,15 +1,10 @@
 0
-2
-рмрп
-hhvbhb
-2
-NAVI
-впалро
-2
-JKJK
-раотў
+1
+поп
+1
+дЖЕЙМОРС
+1
+НЕТ
 1
 музыка
-2
-NAVI,JKJK,jkjkjkj,hhvbhb,D:\\проекты JAVA\\Player\\wav\\NAVI.wav
-впалро,раотў,ормраврі,рмрп,D:\\проекты JAVA\\Player\\wav\\music.wav
+0

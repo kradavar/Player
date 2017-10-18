@@ -1,5 +1,7 @@
 package view;
 
+import controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -54,9 +56,7 @@ public class ChangeColorDialog extends JDialog {
     JPanel buttonPanel = new JPanel();
 
 
-    public ChangeColorDialog (PlayerGUI player){
-        super();
-        setModal(true);
+    public void createChangeColorDialog (Controller controller){
 
         this.setLayout(new GridLayout(11,1));
 
@@ -167,72 +167,72 @@ public class ChangeColorDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 if(pinkArtist.isSelected()){
 
-                    player.artistList.setBackground(Color.pink);
+                    controller.player.artistList.setBackground(Color.pink);
                 }
                      else if (grayArtist.isSelected()){
-                            player.artistList.setBackground(Color.gray);
+                    controller.player.artistList.setBackground(Color.gray);
                         }
                         else if (yellowArtist.isSelected()){
-                                 player.artistList.setBackground(Color.yellow);
+                    controller.player.artistList.setBackground(Color.yellow);
                             }
                                 else if (blueArtist.isSelected()){
-                                        player.artistList.setBackground(Color.blue);
+                    controller.player.artistList.setBackground(Color.blue);
                                     }
 
                 if(pinkSong.isSelected()){
 
-                    player.songList.setBackground(Color.pink);
+                    controller.player.songList.setBackground(Color.pink);
                 }
                 else if (graySong.isSelected()){
-                    player.songList.setBackground(Color.gray);
+                    controller.player.songList.setBackground(Color.gray);
                 }
                 else if (yellowSong.isSelected()){
-                    player.songList.setBackground(Color.yellow);
+                    controller.player.songList.setBackground(Color.yellow);
                 }
                 else if (blueSong.isSelected()){
-                    player.songList.setBackground(Color.blue);
+                    controller.player.songList.setBackground(Color.blue);
                 }
 
                 if(pinkAlbum.isSelected()){
 
-                    player.albumList.setBackground(Color.pink);
+                    controller.player.albumList.setBackground(Color.pink);
                 }
                 else if (grayAlbum.isSelected()){
-                    player.albumList.setBackground(Color.gray);
+                    controller.player.albumList.setBackground(Color.gray);
                 }
                 else if (yellowAlbum.isSelected()){
-                    player.albumList.setBackground(Color.yellow);
+                    controller.player.albumList.setBackground(Color.yellow);
                 }
                 else if (blueAlbum.isSelected()){
-                    player.albumList.setBackground(Color.blue);
+                    controller.player.albumList.setBackground(Color.blue);
                 }
 
                 if(pinkGenre.isSelected()){
 
-                    player.genreList.setBackground(Color.pink);
+                    controller.player.genreList.setBackground(Color.pink);
                 }
                 else if (grayGenre.isSelected()){
-                    player.genreList.setBackground(Color.gray);
+                    controller.player.genreList.setBackground(Color.gray);
                 }
                 else if (yellowGenre.isSelected()){
-                    player.genreList.setBackground(Color.yellow);
+                    controller.player.genreList.setBackground(Color.yellow);
                 }
                 else if (blueGenre.isSelected()){
-                    player.genreList.setBackground(Color.blue);
+                    controller.player.genreList.setBackground(Color.blue);
                 }
 
                 if(pinkPlaylist.isSelected()){
 
-                    player.playlistList.setBackground(Color.pink);
+                    controller.player.playlistList.setBackground(Color.pink);
                 }
                 else if (grayPlaylist.isSelected()){
-                    player.playlistList.setBackground(Color.gray);
+                    controller.player.playlistList.setBackground(Color.gray);
                 }
                 else if (yellowPlaylist.isSelected()){
-                    player.playlistList.setBackground(Color.yellow);
+                    controller.player.playlistList.setBackground(Color.yellow);
                 }
                 else if (bluePlaylist.isSelected()){
-                    player.playlistList.setBackground(Color.blue);
+                    controller.player.playlistList.setBackground(Color.blue);
                 }
             }
         });

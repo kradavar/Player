@@ -1,69 +1,51 @@
-/*package controller;
+package  controller;
 
+import model.MusicLibrary;
 import model.Playlist;
 import model.Song;
-import view.MainWindow;
-import view.PanelPlaylist;
+import view.PlayerGUI;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+import javax.swing.*;
+import java.awt.*;
 
 public class Controller {
-    private MainWindow player;
-    private PanelPlaylist listsPanel;
-    private boolean isOpen;
 
-    public void start() {
-        player = new MainWindow(this);
-    }
+    public MusicLibrary musicLib;
+    public Song song;
+    public Playlist playlist;
+    public PlayerGUI player;
 
-    public Song openNewSong(String s){
-        try {
-            File file = new File(s);
-            Song newSong = new Song();
-            newSong.openNewSong(file);
-            isOpen = true;
-             return newSong;
+    public  Controller(){ }
 
-        }
-        catch (LineUnavailableException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+    public void start(){
+        musicLib = new MusicLibrary();
 
-    public void playMusic(Song song)  {
-        if (isOpen) {
-            song.play(true);
-        }
-        // else ShowMessage
-    }
-
-    public void playListOfSongs(Playlist playlist){
-        playlist.isCurrent = true;
-
-        for (Song currentSong : playlist) {
-            currentSong.play(true);
-            listsPanel.currentSong = currentSong;
-            listsPanel.changeSelectedSong();
-        }
+        JFrame playerFrame = new JFrame();
+        playerFrame.setPreferredSize(new Dimension(1000, 600));
+        playerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        player = new PlayerGUI(this);
+        player.createPlayer(playerFrame);
+        player.createMenu(playerFrame, this);
+        playerFrame.pack();
+        playerFrame.setVisible(true);
 
     }
 
-    public void setCurrentPlaylist(Playlist playlist){
-        if(!playlist.isCurrent) {
-            listsPanel.currentPlaylist = playlist;
-            playlist.isCurrent = true;
+    public void addSong (String genre, String artist, String album, String title, String directory) {
+        Song newSong = new Song(genre, artist, album, title, directory);
+        musicLib.songLibraryMap.put(title, newSong);
+        if (musicLib.artists.contains(artist) == false) {
+            musicLib.artists.add(artist);
+        }
+        if (musicLib.albums.contains(album) == false) {
+            musicLib.albums.add(album);
+        }
+        if (musicLib.genres.contains(genre) == false) {
+            musicLib.genres.add(genre);
+        }
+        if (musicLib.songTitles.contains(title) == false) {
+            musicLib.songTitles.add(title);
         }
     }
 
-
-
-}*/
+}

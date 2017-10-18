@@ -1,5 +1,6 @@
 package view;
 
+import controller.Controller;
 import model.MusicLibrary;
 import model.Playlist;
 
@@ -18,10 +19,9 @@ public class AddPlaylistDialog extends JDialog{
 	JButton cancel;
 	JPanel buttonPanel;
 	String deleteSongTitle;
-	public AddPlaylistDialog(MusicLibrary musicLib){
-		super();
-		setModal(true);
-		musicLibrary = musicLib;
+	public void createAddPlaylistDialog(Controller controller){
+
+		musicLibrary = controller.musicLib;
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		instructions = new JLabel("Type in a title to create a playlist.");

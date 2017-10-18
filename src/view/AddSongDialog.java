@@ -1,6 +1,7 @@
 
 package view;
 
+import controller.Controller;
 import model.MusicLibrary;
 
 import javax.swing.*;
@@ -26,10 +27,9 @@ public class AddSongDialog extends JDialog {
 	JPanel buttonPanel;
 	MusicLibrary musicLibrary;
 	
-	public AddSongDialog(MusicLibrary musicLib){
-		super();
-		setModal(true);
-		musicLibrary = musicLib;
+	public void createAddSongDialog(Controller controller){
+
+		musicLibrary = controller.musicLib;
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		instructions = new JLabel("Type in the information for a song to add it.");
@@ -105,7 +105,7 @@ public class AddSongDialog extends JDialog {
 				tempTitle = title.getText();
 				tempDirectory = songDirectory.getText();
 				if(tempArtist.length() > 0 && tempGenre.length() > 0 && tempAlbum.length() > 0 && tempTitle.length() > 0 && tempDirectory.length() > 0){
-					musicLibrary.addSong(tempGenre, tempArtist, tempAlbum, tempTitle, tempDirectory);
+					controller.addSong(tempGenre, tempArtist, tempAlbum, tempTitle, tempDirectory);
 				}
 				setVisible(false);
 
