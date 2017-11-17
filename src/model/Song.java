@@ -19,17 +19,19 @@ public class Song  {
 		this.setDirectory(directory);
 		setSongFile(new File(directory));
 	}
-	public Song(String CSVSong){
+	/*public Song(String CSVSong){
 		String[] valueArray = CSVSong.split(",");
 		this.setGenre(valueArray[0]);
 		this.setArtist(valueArray[1]);
 		this.setAlbum(valueArray[2]);
 		this.setTitle(valueArray[3]);
 		this.setDirectory(valueArray[4]);
-	}
+	}*/
 	public Song(){
 		
 	}
+
+
 	public String getGenre() {
 		return genre;
 	}

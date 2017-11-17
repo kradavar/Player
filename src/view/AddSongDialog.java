@@ -30,7 +30,10 @@ public class AddSongDialog extends JDialog {
 	public void createAddSongDialog(Controller controller){
 
 		musicLibrary = controller.musicLib;
-		this.setLayout(new GridBagLayout());
+
+		JDialog addSongPanel = new JDialog();
+
+		addSongPanel.setLayout(new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		instructions = new JLabel("Type in the information for a song to add it.");
 		artistLabel = new JLabel("Artist: ");
@@ -58,44 +61,43 @@ public class AddSongDialog extends JDialog {
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 2;
-		this.add(instructions, constraints);
+		addSongPanel.add(instructions, constraints);
 		
 		constraints.gridwidth = 1;
 		constraints.gridy = 1;
-		this.add(artistLabel, constraints);
+		addSongPanel.add(artistLabel, constraints);
 		constraints.gridx = 1;
-		this.add(artist, constraints);
+		addSongPanel.add(artist, constraints);
 		
 		constraints.gridy = 2;
 		constraints.gridx = 0;
-		this.add(albumLabel, constraints);
+		addSongPanel.add(albumLabel, constraints);
 		constraints.gridx = 1;
-		this.add(album, constraints);
+		addSongPanel.add(album, constraints);
 		
 		constraints.gridy = 3;
 		constraints.gridx = 0;
-		this.add(titleLabel, constraints);
+		addSongPanel.add(titleLabel, constraints);
 		constraints.gridx = 1;
-		this.add(title, constraints);
+		addSongPanel.add(title, constraints);
 		
 		constraints.gridy = 4;
 		constraints.gridx = 0;
-		this.add(genreLabel, constraints);
+		addSongPanel.add(genreLabel, constraints);
 		constraints.gridx = 1;
-		this.add(genre, constraints);
+		addSongPanel.add(genre, constraints);
 		
 		constraints.gridy = 5;
 		constraints.gridx = 0;
-		this.add(directoryLabel, constraints);
+		addSongPanel.add(directoryLabel, constraints);
 		constraints.gridx = 1;
-		this.add(songDirectory, constraints);
+		addSongPanel.add(songDirectory, constraints);
 		
 		constraints.gridy = 6;
 		constraints.gridx = 0;
 		constraints.gridwidth = 2;
-		this.add(buttonPanel, constraints);
-		pack();
-		
+		addSongPanel.add(buttonPanel, constraints);
+
 		addSong.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				String tempArtist, tempGenre, tempTitle, tempAlbum, tempDirectory;
@@ -104,20 +106,26 @@ public class AddSongDialog extends JDialog {
 				tempAlbum = album.getText();
 				tempTitle = title.getText();
 				tempDirectory = songDirectory.getText();
+				artist.setText("still good");
 				if(tempArtist.length() > 0 && tempGenre.length() > 0 && tempAlbum.length() > 0 && tempTitle.length() > 0 && tempDirectory.length() > 0){
 					controller.addSong(tempGenre, tempArtist, tempAlbum, tempTitle, tempDirectory);
-				}
-				setVisible(false);
 
-				dispose();
+				}
+
+				setVisible(false);
+				addSongPanel.dispose();
+
 			}
 		});
 		cancel.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
-				dispose();
+				addSongPanel.dispose();
 			}
 		});
+
+		addSongPanel.pack();
+		addSongPanel.setVisible(true);
 	}
 
 }

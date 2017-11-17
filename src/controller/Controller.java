@@ -5,8 +5,7 @@ import model.Playlist;
 import model.Song;
 import view.PlayerGUI;
 
-import javax.swing.*;
-import java.awt.*;
+import java.util.List;
 
 public class Controller {
 
@@ -15,19 +14,11 @@ public class Controller {
     public Playlist playlist;
     public PlayerGUI player;
 
-    public  Controller(){ }
-
     public void start(){
         musicLib = new MusicLibrary();
 
-        JFrame playerFrame = new JFrame();
-        playerFrame.setPreferredSize(new Dimension(1000, 600));
-        playerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        player = new PlayerGUI(this);
-        player.createPlayer(playerFrame);
-        player.createMenu(playerFrame, this);
-        playerFrame.pack();
-        playerFrame.setVisible(true);
+        player = new PlayerGUI();
+        player.createPlayerGUI(this);
 
     }
 
@@ -48,4 +39,63 @@ public class Controller {
         }
     }
 
+    public void forwardSong(){
+        Song curSong = musicLib.getCurrentSong();
+        Song nextSong = musicLib.getNextSong(curSong);
+        player.songInfo.setText(nextSong.getTitle() + " by " + nextSong.getArtist());
+        musicLib.setCurrentSong(nextSong);
+        musicLib.playSong(nextSong);
+    }
+    public void stop(){
+        musicLib.setCurrentSong(null);
+        player.songInfo.setText("No song playing");
+        musicLib.stopSong();
+
+    }
+    public void play() {
+        String songName = (String) player.songList.getSelectedValue();
+        Song songToPlay = musicLib.getSong(songName);
+        player.songInfo.setText(songName + " by " + songToPlay.getArtist());
+        musicLib.setCurrentSong(songToPlay);
+        musicLib.playSong(songToPlay);
+    }
+
+
+    public void updateLists(){
+        player.songModel.clear();
+        player.albumModel.clear();
+        player.genreModel.clear();
+        player.artistModel.clear();
+        player.playlistModel.clear();
+        for(String song : player.musicLibrary.getSongTitles()){
+            player.songModel.addElement(song);
+        }
+
+        for(String album : player.musicLibrary.getAlbums()){
+            player.albumModel.addElement(album);
+        }
+        for(String genre : player.musicLibrary.getGenres()){
+            player.genreModel.addElement(genre);
+        }
+        for(String artist : player.musicLibrary.getArtists()){
+            player.artistModel.addElement(artist);
+        }
+        for(Playlist playlist: player.musicLibrary.getPlaylists()){
+            player.playlistModel.addElement(playlist.getTitle());
+        }
+
+        player.songList.setModel(player.songModel);
+        player.albumList.setModel(player.albumModel);
+        player.genreList.setModel(player.genreModel);
+        player.artistList.setModel(player.artistModel);
+        player.playlistList.setModel(player.playlistModel);
+    }
+
+    public List<Song> getListOfSongs() {
+        return musicLib.songList;
+    }
+
+    public void updateLists(List<Song> songList) {
+
+    }
 }

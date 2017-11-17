@@ -58,7 +58,9 @@ public class ChangeColorDialog extends JDialog {
 
     public void createChangeColorDialog (Controller controller){
 
-        this.setLayout(new GridLayout(11,1));
+        JDialog changeColor = new JDialog();
+
+        changeColor.setLayout(new GridLayout(11,1));
 
         pinkSong = new JRadioButton("PINK");
         pinkAlbum = new JRadioButton("PINK");
@@ -121,46 +123,46 @@ public class ChangeColorDialog extends JDialog {
         songLabel = new JLabel("Change song BG color");
         playLabel = new JLabel("Change playlist BG color");
 
-        this.add(artistlabel);
+        changeColor.add(artistlabel);
         artistColor.add(pinkArtist);
         artistColor.add(grayArtist);
         artistColor.add(yellowArtist);
         artistColor.add(blueArtist);
-        this.add(artistColor);
+        changeColor.add(artistColor);
 
-        this.add(songLabel);
+        changeColor.add(songLabel);
         songColor.add(pinkSong);
         songColor.add(graySong);
         songColor.add(yellowSong);
         songColor.add(blueSong);
-        this.add(songColor);
+        changeColor.add(songColor);
 
-        this.add(albumLabel);
+        changeColor.add(albumLabel);
         albumColor.add(pinkAlbum);
         albumColor.add(grayAlbum);
         albumColor.add(yellowAlbum);
         albumColor.add(blueAlbum);
-        this.add(albumColor);
+        changeColor.add(albumColor);
 
-        this.add(playLabel);
+        changeColor.add(playLabel);
         playlistColor.add(pinkPlaylist);
         playlistColor.add(grayPlaylist);
         playlistColor.add(yellowPlaylist);
         playlistColor.add(bluePlaylist);
-        this.add(playlistColor);
+        changeColor.add(playlistColor);
 
-        this.add(genreLabel);
+        changeColor.add(genreLabel);
         genreColor.add(pinkGenre);
         genreColor.add(grayGenre);
         genreColor.add(yellowGenre);
         genreColor.add(blueGenre);
-        this.add(genreColor);
+        changeColor.add(genreColor);
 
         buttonOK = new JButton("OK");
         buttonCANCEL = new JButton("Cancel");
         buttonPanel.add(buttonOK);
         buttonPanel.add(buttonCANCEL);
-        this.add(buttonPanel);
+        changeColor.add(buttonPanel);
 
         buttonOK.addActionListener(new ActionListener() {
             @Override
@@ -234,11 +236,14 @@ public class ChangeColorDialog extends JDialog {
                 else if (bluePlaylist.isSelected()){
                     controller.player.playlistList.setBackground(Color.blue);
                 }
+
+                changeColor.dispose();
             }
         });
 
 
-        pack();
+        changeColor.pack();
+        changeColor.setVisible(true);
     }
 
 
