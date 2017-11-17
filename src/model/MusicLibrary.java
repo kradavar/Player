@@ -3,10 +3,7 @@ package model;
 
 import javax.sound.sampled.*;
 import java.io.*;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 public class MusicLibrary {
 
@@ -20,8 +17,9 @@ public class MusicLibrary {
 	public File libraryFile;
 	public Clip clip;
 	public Song currentSong;
-	
-	public Song getCurrentSong(){
+    public List<Song> songList;
+
+    public Song getCurrentSong(){
 		return currentSong;
 	}
 	public Map<String, Song> getSongLibrary(){
@@ -52,25 +50,6 @@ public class MusicLibrary {
 		}
 	}
 	
-	public void addSong(String genre, String artist, String album, String title, String directory){
-		Song newSong = new Song(genre, artist, album, title, directory);
-		songLibraryMap.put(title, newSong);
-		if(artists.contains(artist) == false){
-			artists.add(artist);
-		}
-		if (albums.contains(album) == false){
-			albums.add(album);
-		}
-		if (genres.contains(genre) == false){
-			genres.add(genre);
-		}
-		if (songTitles.contains(title) == false){
-			songTitles.add(title);
-		}
-
-
-	}
-
 	public Song getNextSong(Song curSong){
 		Song nextSong ;
 		String[] tempArray = new String[songTitles.size()];
@@ -106,7 +85,37 @@ public class MusicLibrary {
 	public void addAlbum(String album){
 		albums.add(album);
 	}
-
+	/*public void addSong(String CSVSong){
+		Song newSong = new Song(CSVSong);
+		songLibraryMap.put(newSong.getTitle(), newSong);
+		if(artists.contains(newSong.getArtist()) == false){
+			artists.add(newSong.getArtist());
+		}
+		if (albums.contains(newSong.getAlbum()) == false){
+			albums.add(newSong.getAlbum());
+		}
+		if (genres.contains(newSong.getGenre()) == false){
+			genres.add(newSong.getGenre());
+		}
+		if (songTitles.contains(newSong.getTitle()) == false){
+			songTitles.add(newSong.getTitle());
+		}
+	}*/
+	public void addSong(Song newSong){
+		songLibraryMap.put(newSong.getTitle(), newSong);
+		if(artists.contains(newSong.getArtist()) == false){
+			artists.add(newSong.getArtist());
+		}
+		if (albums.contains(newSong.getAlbum()) == false){
+			albums.add(newSong.getAlbum());
+		}
+		if (genres.contains(newSong.getGenre()) == false){
+			genres.add(newSong.getGenre());
+		}
+		if (songTitles.contains(newSong.getTitle()) == false){
+			songTitles.add(newSong.getTitle());
+		}
+	}
 	public void saveLibrary() throws IOException {
 		FileWriter libraryFileWriter = new FileWriter(libraryFile, false);
 		BufferedWriter libraryWriter = new BufferedWriter(libraryFileWriter);
@@ -171,6 +180,11 @@ public class MusicLibrary {
 				Playlist newPlaylist = new Playlist(libraryReader.readLine());
 				newLib.addPlaylist(newPlaylist);
 			}
+			/*readLength = Integer.parseInt(libraryReader.readLine());
+			for(int i = 0; i < readLength; i++){
+				Song newSong = new Song(libraryReader.readLine());
+				newLib.addSong(newSong);
+			}*/
 
 		}
 		return newLib;
@@ -241,4 +255,5 @@ public class MusicLibrary {
 	public HashSet<String> getGenres() {
 		return genres;
 	}
+
 }

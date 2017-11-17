@@ -3,7 +3,6 @@ package view;
 
 import controller.Controller;
 import model.MusicLibrary;
-import model.Playlist;
 import model.Song;
 
 import javax.swing.*;
@@ -12,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -20,17 +18,18 @@ import java.util.HashSet;
 
 public class PlayerGUI extends JPanel{
 
-	JList playlistList;
-	JList genreList;
-	JList artistList;
-	JList albumList;
-	JList songList;
-	DefaultListModel playlistModel;
-	DefaultListModel genreModel;
-	DefaultListModel artistModel;
-	DefaultListModel albumModel;
-	DefaultListModel songModel;
-	JTextField songInfo;
+	Controller controller;
+	public JList playlistList;
+	public JList genreList;
+	public JList artistList;
+	public JList albumList;
+	public JList songList;
+	public DefaultListModel playlistModel;
+	public DefaultListModel genreModel;
+	public DefaultListModel artistModel;
+	public DefaultListModel albumModel;
+	public DefaultListModel songModel;
+	public JTextField songInfo;
 
 	JButton startPauseButton;
 	JButton backButton;
@@ -43,13 +42,20 @@ public class PlayerGUI extends JPanel{
 	JSlider musicSlider;
 	JLabel albumArtLabel;
 	JPanel bottomContainer;
-	MusicLibrary musicLibrary;
+	public MusicLibrary musicLibrary;
 	GridBagConstraints constraints;
 	
 	
 	PlayerGUI thisGUI;
 	
-	public PlayerGUI(Controller controller){
+	public void createPlayerGUI(Controller controller){
+
+		this.controller = controller;
+
+		JFrame playerFrame = new JFrame();
+		playerFrame.setPreferredSize(new Dimension(1000, 600));
+		playerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		musicLibrary = new MusicLibrary();
 		
 		playlistList = new JList();
@@ -69,8 +75,8 @@ public class PlayerGUI extends JPanel{
 
 		startPauseButton = new JButton("Start/Pause");
 		backButton = new JButton("Back");
-		forwardButton = new JButton("Forward");
-		stopButton = new JButton("Stop");
+		forwardButton = new JButton("forwardSong");
+		stopButton = new JButton("stop");
 		buttonPanel = new JPanel();
 		musicSlider = new MusicSlider();
 		bottomContainer = new JPanel();
@@ -79,31 +85,31 @@ public class PlayerGUI extends JPanel{
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.weightx = constraints.weighty = 1.0;
 		thisGUI = this;
-		this.setLayout(new GridBagLayout());
+		playerFrame.setLayout(new GridBagLayout());
 
 		constraints.gridheight = 4;
 		constraints.gridy = 0;
 		constraints.gridx = 1;
 		playlistList.setBackground(Color.gray);
-		this.add(playlistList, constraints);
+		playerFrame.add(playlistList, constraints);
 		
 		constraints.gridy = 4;
 		genreList.setBackground(Color.green);
-		this.add(genreList, constraints);
+		playerFrame.add(genreList, constraints);
 		
 		constraints.gridheight = 8;
 		constraints.gridx = 2;
 		constraints.gridy = 0;
 		artistList.setBackground(Color.blue);
-		this.add(artistList, constraints);
+		playerFrame.add(artistList, constraints);
 		
 		constraints.gridx = 3;
 		albumList.setBackground(Color.yellow);
-		this.add(albumList, constraints);
+		playerFrame.add(albumList, constraints);
 		
 		constraints.gridx = 4;
 		songList.setBackground(Color.orange);
-		this.add(songList, constraints);
+		playerFrame.add(songList, constraints);
 		
 		constraints.gridx = 1;
 		constraints.gridy = 8;
@@ -111,11 +117,11 @@ public class PlayerGUI extends JPanel{
 		constraints.weighty = .4;
 		songInfo.setText("Test Text");
 		songInfo.setBackground(Color.pink);
-		this.add(songInfo, constraints);
+		playerFrame.add(songInfo, constraints);
 		
 		constraints.gridx = 2;
 		constraints.gridwidth = 3;
-		this.add(bottomContainer, constraints);
+		playerFrame.add(bottomContainer, constraints);
 		buttonPanel.add(backButton);
 		buttonPanel.add(stopButton);
 		buttonPanel.add(startPauseButton);
@@ -123,13 +129,78 @@ public class PlayerGUI extends JPanel{
 		bottomContainer.add(buttonPanel);
 		bottomContainer.add(musicSlider);
 
+		JMenuBar Menu = new JMenuBar();
+		JMenu FileMenu = new JMenu("File");
+		JMenu ViewMenu = new JMenu("View");
+		JMenuItem changeColors = new JMenuItem("Change colors");
+		JMenuItem changeLanguage = new JMenuItem("Change language");
 
-		try {
-			musicLibrary = MusicLibrary.parseLibrary("Library.txt");
-			updateLists();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		JMenuItem addSong = new JMenuItem("Add Song");
+		JMenuItem deleteSong = new JMenuItem("Delete Song");
+		JMenuItem addPlaylist = new JMenuItem("Add Playlist");
+		JMenuItem addSongToPlaylist = new JMenuItem("Add Song to Playlist");
+		Menu.add(FileMenu);
+		Menu.add(ViewMenu);
+		FileMenu.add(addSong);
+		FileMenu.add(deleteSong);
+		FileMenu.add(addPlaylist);
+		ViewMenu.add(changeColors);
+		ViewMenu.add(changeLanguage);
+
+		addSong.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				AddSongDialog songDialog = new AddSongDialog();
+
+				songDialog.createAddSongDialog(controller);
+				//controller.updateLists();
+				try {
+					musicLibrary.saveLibrary();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		deleteSong.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				DeleteSongDialog deleteDialog = new DeleteSongDialog();
+				deleteDialog.createDeleteDialog(controller);
+				//controller.updateLists(this);
+				try {
+					musicLibrary.saveLibrary();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		addPlaylist.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0){
+				AddPlaylistDialog playlistDialog = new AddPlaylistDialog();
+				playlistDialog.createAddPlaylistDialog(controller);
+				//controller.updateLists(this);
+				try {
+					musicLibrary.saveLibrary();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		changeColors.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ChangeColorDialog colorDialog = new ChangeColorDialog();
+				colorDialog.createChangeColorDialog(controller);
+							}
+		});
+		// ДОДЕЛАТЬ ААААААААААААААААА
+		addSongToPlaylist.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+
+			}
+		});
+
+		playerFrame.setJMenuBar(Menu);
+		playerFrame.revalidate();
+		playerFrame.repaint();
 		
 		sortSong = new JMenuItem("Sort by song title");
 		sortArtist = new JMenuItem("Sort by artist name");
@@ -139,17 +210,17 @@ public class PlayerGUI extends JPanel{
 		
 		startPauseButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
-				Play();
+				controller.play();
 			}
 		});
 		stopButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				Stop();
+				controller.stop();
 			}
 		});
 		forwardButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				Forward();
+				controller.forwardSong();
 			}
 		});
 		songList.addMouseListener(new MouseAdapter(){
@@ -195,136 +266,9 @@ public class PlayerGUI extends JPanel{
 				}
 			}
 		});
+
+		playerFrame.pack();
+		playerFrame.setVisible(true);
 	}
 
-	public void Forward(){
-		Song curSong = musicLibrary.getCurrentSong();
-		Song nextSong = musicLibrary.getNextSong(curSong);
-		songInfo.setText(nextSong.getTitle() + " by " + nextSong.getArtist());
-		musicLibrary.setCurrentSong(nextSong);
-		musicLibrary.playSong(nextSong);
-	}
-	public void Stop(){
-		musicLibrary.setCurrentSong(null);
-		songInfo.setText("No song playing");
-		musicLibrary.stopSong();
-
-	}
-	public void Play(){
-		String songName = (String)songList.getSelectedValue();
-		Song songToPlay = musicLibrary.getSong(songName);
-		songInfo.setText(songName + " by " + songToPlay.getArtist());
-		musicLibrary.setCurrentSong(songToPlay);
-		musicLibrary.playSong(songToPlay);
-	}
-	public void createPlayer(JFrame TitanFrame){
-		TitanFrame.getContentPane().add(this);
-	}
-
-		public void createMenu(JFrame mainFrame, Controller controller){
-		JMenuBar Menu = new JMenuBar();
-		JMenu FileMenu = new JMenu("File");
-		JMenu ViewMenu = new JMenu("View");
-		JMenuItem changeColors = new JMenuItem("Change colors");
-		JMenuItem changeLanguage = new JMenuItem("Change language");
-
-		JMenuItem addSong = new JMenuItem("Add Song");
-		JMenuItem deleteSong = new JMenuItem("Delete Song");
-		JMenuItem addPlaylist = new JMenuItem("Add Playlist");
-		JMenuItem addSongToPlaylist = new JMenuItem("Add Song to Playlist");
-		Menu.add(FileMenu);
-		Menu.add(ViewMenu);
-		FileMenu.add(addSong);
-		FileMenu.add(deleteSong);
-		FileMenu.add(addPlaylist);
-		ViewMenu.add(changeColors);
-		ViewMenu.add(changeLanguage);
-		
-		addSong.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				AddSongDialog songDialog = new AddSongDialog();
-
-				songDialog.createAddSongDialog(controller);
-				updateLists();
-				try {
-					musicLibrary.saveLibrary();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		deleteSong.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				DeleteSongDialog deleteDialog = new DeleteSongDialog();
-				deleteDialog.createDeleteDialog(controller);
-				updateLists();
-				try {
-					musicLibrary.saveLibrary();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		addPlaylist.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0){
-				AddPlaylistDialog playlistDialog = new AddPlaylistDialog();
-				playlistDialog.createAddPlaylistDialog(controller);
-				updateLists();
-				try {
-					musicLibrary.saveLibrary();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		changeColors.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ChangeColorDialog colorDialog = new ChangeColorDialog();
-				colorDialog.createChangeColorDialog(controller);
-				updateLists();
-
-			}
-		});
-			// ДОДЕЛАТЬ ААААААААААААААААА
-		addSongToPlaylist.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-
-			}
-		});
-		
-		mainFrame.setJMenuBar(Menu);
-		mainFrame.revalidate();
-		mainFrame.repaint();
-	}
-	
-	public void updateLists(){
-		songModel.clear();
-		albumModel.clear();
-		genreModel.clear();
-		artistModel.clear();
-		playlistModel.clear();
-		for(String song : musicLibrary.getSongTitles()){
-			songModel.addElement(song);
-		}
-
-		for(String album : musicLibrary.getAlbums()){
-			albumModel.addElement(album);
-		}
-		for(String genre : musicLibrary.getGenres()){
-			genreModel.addElement(genre);
-		}
-		for(String artist : musicLibrary.getArtists()){
-			artistModel.addElement(artist);
-		}
-		for(Playlist playlist: musicLibrary.getPlaylists()){
-			playlistModel.addElement(playlist.getTitle());
-		}
-		
-		songList.setModel(songModel);
-		albumList.setModel(albumModel);
-		genreList.setModel(genreModel);
-		artistList.setModel(artistModel);
-		playlistList.setModel(playlistModel);
-	}
 }

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 public class Playlist {
 	private String title;
 	private ArrayList<Song> songList;
+
+	//public void createNewPlaylist
 	public Playlist(String title){
 		this.title = title;
 	}
@@ -21,4 +23,6 @@ public class Playlist {
 
 	public void removeFromList(Song song) {
 	}
+
+
 }
